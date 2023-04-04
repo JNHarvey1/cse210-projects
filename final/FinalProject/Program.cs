@@ -17,7 +17,36 @@ class Program
 
         Console.WriteLine("Welcome {0}", player.Name);
 
-        var Jungle = new JungleMap(player);
+        var jungle = new JungleMap(player);
+        jungle.CreateAreas(3, 3);
+
+        jungle.GoToStartingArea();
+
+        Actions.Instance.Register(new Go(jungle));
+
+        var run = true;
+
+        Area lastArea = null;
+
+        while(run)
+        {
+            if (lastArea != jungle.CurrentArea)
+            {
+                Console.WriteLine(jungle.CurrentArea.ToString());
+                lastArea = jungle.CurrentArea;
+            }
+
+            Console.WriteLine(Text.WhatToDo);
+
+            var input = Console.ReadLine().ToLower();
+            if(input == Text.Quit)
+                run = false;
+            else
+                Actions.Instance.Execute(input.Split(" "));
+
+
+        }
+
 
     }
 }
